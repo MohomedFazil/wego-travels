@@ -1,0 +1,444 @@
+import React, { useRef } from 'react';
+import { useParams, Link } from 'react-router-dom';
+import { motion, useInView } from 'framer-motion';
+import { HeroSlider, SlideData } from '../components/HeroSlider';
+import { Star, Clock, Calendar, ArrowRight, CheckCircle2, ChevronLeft } from 'lucide-react';
+
+// Fade In Section Component
+const FadeInSection = ({ children }: { children: React.ReactNode }) => {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, margin: "-50px" });
+
+  return (
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 50 }}
+      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+      transition={{ duration: 0.8, ease: "easeOut" }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+interface Activity {
+  title: string;
+  description: string;
+  image: string;
+  duration: string;
+}
+
+interface Package {
+  name: string;
+  price: string;
+  duration: string;
+  description: string;
+  includes: string[];
+}
+
+interface CountryData {
+  heroSlides: SlideData[];
+  activities: Activity[];
+  packages: Package[];
+  backgroundWord: string;
+}
+
+const destinationData: Record<string, CountryData> = {
+  bali: {
+    backgroundWord: 'BALI',
+    heroSlides: [
+      {
+        id: 'bali-1',
+        title: 'Bali',
+        subtitle: 'Island of Gods',
+        description: 'Experience the magic of the Island of the Gods. From ancient temples to pristine beaches, Bali offers a spiritual and visual feast for every traveler.',
+        image: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=2000',
+        ctaText: 'View Packages'
+      },
+      {
+        id: 'bali-2',
+        title: 'Ubud',
+        subtitle: 'Cultural Heart',
+        description: 'Discover the lush rice terraces, sacred monkey forest, and traditional crafts in the heart of Bali.',
+        image: 'https://images.unsplash.com/photo-1555400038-63f5ba517a47?auto=format&fit=crop&q=80&w=2000',
+        ctaText: 'Explore Ubud'
+      }
+    ],
+    activities: [
+      {
+        title: 'Temple Pilgrimage',
+        description: 'Visit iconic temples like Tanah Lot and Uluwatu at sunset for a spiritual experience.',
+        image: 'https://images.unsplash.com/photo-1539367628448-4bc5c9d171c8?auto=format&fit=crop&q=80&w=1000',
+        duration: '7 Hours'
+      },
+      {
+        title: 'Surf the Waves',
+        description: 'Catch world-class waves at Canggu or Kuta beaches with professional instructors.',
+        image: 'https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?auto=format&fit=crop&q=80&w=1000',
+        duration: '4 Hours'
+      },
+      {
+        title: 'Yoga Retreat',
+        description: 'Find inner peace with a wellness session amidst the tranquil jungles of Ubud.',
+        image: 'https://images.unsplash.com/photo-1545389336-cf090694435e?auto=format&fit=crop&q=80&w=1000',
+        duration: '3 Hours'
+      }
+    ],
+    packages: [
+      {
+        name: 'Essential Bali',
+        price: 'From $899',
+        duration: '5 Days / 4 Nights',
+        description: 'A perfect introduction to Bali\'s highlights, covering beaches, temples, and Ubud.',
+        includes: ['4-Star Accommodation', 'Daily Breakfast', 'Airport Transfers', 'Guided Temple Tours']
+      },
+      {
+        name: 'Adventure & Surf',
+        price: 'From $1,299',
+        duration: '7 Days / 6 Nights',
+        description: 'For thrill-seekers looking to master the waves and hike the volcanoes.',
+        includes: ['Boutique Surf Camps', 'Surf Equipment', 'Mount Batur Sunrise Hike', 'Water Rafting']
+      }
+    ]
+  },
+  thailand: {
+    backgroundWord: 'THAILAND',
+    heroSlides: [
+      {
+        id: 'thai-1',
+        title: 'Thailand',
+        subtitle: 'Land of Smiles',
+        description: 'Immerse yourself in bustling markets, ornate shrines, and the crystal-clear waters of the Andaman Sea.',
+        image: 'https://images.unsplash.com/photo-1552465011-b4e21bf6e79a?auto=format&fit=crop&q=80&w=2000',
+        ctaText: 'View Packages'
+      },
+      {
+        id: 'thai-2',
+        title: 'Phuket',
+        subtitle: 'Island Paradise',
+        description: 'White sandy beaches, vibrant nightlife, and emerald waters await in Thailand\'s largest island.',
+        image: 'https://images.unsplash.com/photo-1589394815804-964ed0be2eb5?auto=format&fit=crop&q=80&w=2000',
+        ctaText: 'Island Hopping'
+      }
+    ],
+    activities: [
+      {
+        title: 'Grand Palace Tour',
+        description: 'Marvel at the intricate architecture and sacred spirits of Bangkok\'s most famous landmark.',
+        image: 'https://images.unsplash.com/photo-1563492065599-3520f775eeed?auto=format&fit=crop&q=80&w=1000',
+        duration: '4 Hours'
+      },
+      {
+        title: 'Island Hopping',
+        description: 'Sail through Phang Nga Bay and visit the famous Phi Phi Islands by speedboat.',
+        image: 'https://images.unsplash.com/photo-1537956965359-7573183d1f57?auto=format&fit=crop&q=80&w=1000',
+        duration: '8 Hours'
+      },
+      {
+        title: 'Thai Cooking Class',
+        description: 'Learn the secrets of authentic Thai cuisine from local master chefs.',
+        image: 'https://images.unsplash.com/photo-1555126634-323283e090fa?auto=format&fit=crop&q=80&w=1000',
+        duration: '3 Hours'
+      }
+    ],
+    packages: [
+      {
+        name: 'Thai Highlights',
+        price: 'From $749',
+        duration: '6 Days / 5 Nights',
+        description: 'Best of Bangkok and Phuket, combining city culture with island relaxation.',
+        includes: ['Flights (BKK-HKT)', 'Luxury Hotels', 'Street Food Tour', 'Phi Phi Island Trip']
+      },
+      {
+        name: 'Northern Explorer',
+        price: 'From $999',
+        duration: '8 Days / 7 Nights',
+        description: 'Explore the mountains of Chiang Mai and the golden triangle.',
+        includes: ['Elephant Sanctuary Visit', 'Jungle Trekking', 'Temple Passes', 'Traditional Dinners']
+      }
+    ]
+  },
+  kerala: {
+    backgroundWord: 'KERALA',
+    heroSlides: [
+      {
+        id: 'kerala-1',
+        title: 'Kerala',
+        subtitle: 'God\'s Own Country',
+        description: "Glide through the tranquil backwaters, explore lush tea plantations, and rejuvenate your soul with Ayurveda.",
+        image: 'https://images.unsplash.com/photo-1602216056096-3b40cc0c9944?auto=format&fit=crop&q=80&w=2000',
+        ctaText: 'View Packages'
+      }
+    ],
+    activities: [
+      {
+        title: 'Backwater Cruise',
+        description: 'Spend a night on a traditional houseboat cruising through Alleppey\'s palm-fringed canals.',
+        image: 'https://images.unsplash.com/photo-1593181629936-11c609b8db9b?auto=format&fit=crop&q=80&w=1000',
+        duration: '24 Hours'
+      },
+      {
+        title: 'Tea Garden Trek',
+        description: 'Walk through the rolling hills of Munnar and learn about traditional tea processing.',
+        image: 'https://images.unsplash.com/photo-1516690561799-46d8f74f9ab3?auto=format&fit=crop&q=80&w=1000',
+        duration: '4 Hours'
+      }
+    ],
+    packages: [
+      {
+        name: 'Mist & Backwaters',
+        price: 'From $599',
+        duration: '4 Days / 3 Nights',
+        description: 'A serene journey through Munnar and Alleppey.',
+        includes: ['Hill Station Hotel', 'Deluxe Houseboat', 'All Meals on Boat', 'Sightseeing Transfers']
+      }
+    ]
+  },
+  japan: {
+    backgroundWord: 'JAPAN',
+    heroSlides: [
+      {
+        id: 'japan-1',
+        title: 'Kyoto',
+        subtitle: 'Timeless Beauty',
+        description: 'Where tradition meets modernity. Walk through thousands of vermilion torii gates and witness the timeless beauty of cherry blossoms.',
+        image: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?auto=format&fit=crop&q=80&w=2000',
+        ctaText: 'View Packages'
+      }
+    ],
+    activities: [
+      {
+        title: 'Tea Ceremony',
+        description: 'Experience the mindful art of Japanese tea in a traditional Kyoto machiya.',
+        image: 'https://images.unsplash.com/photo-1543097692-fa13c6cd8595?auto=format&fit=crop&q=80&w=1000',
+        duration: '2 Hours'
+      }
+    ],
+    packages: [
+      {
+        name: 'Kyoto Cultural',
+        price: 'From $1,299',
+        duration: '5 Days / 4 Nights',
+        description: 'Immerse yourself in Zen gardens and imperial palaces.',
+        includes: ['Ryokan Stay', 'Kaiseki Dinner', 'Private Guide', 'Bullet Train Pass']
+      }
+    ]
+  }
+};
+
+const defaultData: CountryData = {
+  backgroundWord: 'EXPLORE',
+  heroSlides: [
+    {
+      id: 'explore-1',
+      title: 'Discover More',
+      subtitle: 'Global Destinations',
+      description: 'Uncover the hidden gems and local secrets of this amazing location.',
+      image: 'https://images.unsplash.com/photo-1476514525535-07fb3b4ae5f1?auto=format&fit=crop&q=80&w=2000',
+      ctaText: 'Contact Us'
+    }
+  ],
+  activities: [],
+  packages: []
+};
+
+export function DestinationDetail() {
+  const { id } = useParams<{ id: string }>();
+  const data = id && destinationData[id] ? destinationData[id] : defaultData;
+
+  return (
+    <div className="bg-white">
+      {/* 1. Immersive Hero Slider */}
+      <div className="h-screen w-full relative">
+        <HeroSlider
+          slides={data.heroSlides}
+          topContent={
+            <Link
+              to="/destinations"
+              className="inline-flex items-center space-x-3 text-white/70 hover:text-white transition-all group mb-2"
+            >
+              <div className="w-8 h-8 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/20 group-hover:bg-white/20 group-hover:border-white/40 transition-all">
+                <ChevronLeft className="w-5 h-5 group-hover:scale-110 transition-transform" />
+              </div>
+              <span className="text-[10px] md:text-xs font-black uppercase tracking-[0.2em]">Explore All</span>
+            </Link>
+          }
+        />
+      </div>
+
+      {/* 2. Activities Section */}
+      {data.activities.length > 0 && (
+        <section className="py-32 bg-white relative overflow-hidden">
+
+
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <FadeInSection>
+              <div className="relative mb-24 text-center">
+                <span
+                  className="text-8xl md:text-9xl font-black text-white absolute -top-16 left-1/2 -translate-x-1/2 z-0 select-none hidden lg:block uppercase tracking-[0.2em]"
+                  style={{ WebkitTextStroke: '2px #e2e8f0', color: 'rgba(241, 245, 249, 0.5)' }}
+                >
+                  ACTIVITIES
+                </span>
+                <div className="relative z-10 text-center">
+                  <div className="flex items-center justify-center space-x-3 mb-6">
+                    <div className="h-[2px] w-12 bg-orange-500"></div>
+                    <span className="text-orange-600 font-bold tracking-widest uppercase text-sm">Top Experiences</span>
+                    <div className="h-[2px] w-12 bg-orange-500"></div>
+                  </div>
+                  <h2 className="text-4xl md:text-6xl font-bold text-blue-900 mb-8 leading-tight">
+                    Things to <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-200">
+                      Do.
+                    </span>
+                  </h2>
+                  <p className="text-xl text-gray-500 font-light max-w-3xl mx-auto">
+                    From adventurous treks to tranquil moments, discover the best activities this country has to offer.
+                  </p>
+                </div>
+              </div>
+            </FadeInSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+              {data.activities.map((activity, idx) => (
+                <FadeInSection key={idx}>
+                  <div className="group cursor-pointer">
+                    <div className="relative h-[450px] rounded-[2.5rem] overflow-hidden shadow-xl">
+                      <img
+                        src={activity.image}
+                        alt={activity.title}
+                        className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
+                      <div className="absolute bottom-10 left-10 right-10">
+                        <div className="flex items-center space-x-2 text-orange-400 mb-2">
+                          <Clock size={16} />
+                          <span className="text-sm font-bold uppercase tracking-widest">{activity.duration}</span>
+                        </div>
+                        <h3 className="text-3xl font-bold text-white mb-4 leading-tight">{activity.title}</h3>
+                        <p className="text-gray-300 font-light leading-relaxed mb-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                          {activity.description}
+                        </p>
+                        <div className="w-12 h-12 bg-white/20 backdrop-blur rounded-full flex items-center justify-center text-white group-hover:bg-orange-500 transition-colors">
+                          <ArrowRight size={20} />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </FadeInSection>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 3. Packages Section */}
+      {data.packages.length > 0 && (
+        <section className="py-32 bg-gray-50 relative overflow-hidden">
+
+          <div className="max-w-7xl mx-auto px-6 relative z-10">
+            <FadeInSection>
+              <div className="relative mb-24 text-center">
+                <span
+                  className="text-8xl md:text-9xl font-black text-white absolute -top-16 left-1/2 -translate-x-1/2 z-0 select-none hidden lg:block uppercase tracking-[0.2em]"
+                  style={{ WebkitTextStroke: '2px #e2e8f0', color: 'rgba(241, 245, 249, 0.5)' }}
+                >
+                  PACKAGES
+                </span>
+                <div className="relative z-10 text-center">
+                  <div className="flex items-center justify-center space-x-3 mb-6">
+                    <div className="h-[2px] w-12 bg-blue-900"></div>
+                    <span className="text-blue-900 font-bold tracking-widest uppercase text-sm">Featured Offers</span>
+                    <div className="h-[2px] w-12 bg-blue-900"></div>
+                  </div>
+                  <h2 className="text-4xl md:text-6xl font-bold text-blue-900 mb-8 leading-tight">
+                    Travel <br />
+                    <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-200">
+                      Packages.
+                    </span>
+                  </h2>
+                  <p className="text-xl text-gray-500 font-light max-w-3xl mx-auto">
+                    Curated itineraries designed to give you the most unforgettable experience.
+                  </p>
+                </div>
+              </div>
+            </FadeInSection>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+              {data.packages.map((pkg, idx) => (
+                <FadeInSection key={idx}>
+                  <div className="bg-white p-12 rounded-[3.5rem] border border-gray-100 shadow-sm hover:shadow-2xl transition-all duration-500 group relative overflow-hidden">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-orange-50 -mr-16 -mt-16 rounded-full group-hover:scale-[10] transition-transform duration-700 pointer-events-none opacity-50" />
+
+                    <div className="relative z-10">
+                      <div className="flex justify-between items-start mb-10">
+                        <div>
+                          <div className="flex items-center space-x-2 text-orange-500 mb-2">
+                            <Calendar size={18} />
+                            <span className="text-sm font-black uppercase tracking-widest">{pkg.duration}</span>
+                          </div>
+                          <h3 className="text-4xl font-bold text-blue-900 leading-tight">{pkg.name}</h3>
+                        </div>
+                        <div className="text-right">
+                          <p className="text-3xl font-black text-blue-900">{pkg.price}</p>
+                          <p className="text-gray-400 text-sm font-bold uppercase tracking-widest">Fixed Price</p>
+                        </div>
+                      </div>
+
+                      <p className="text-xl text-gray-500 font-light mb-10 leading-relaxed">
+                        {pkg.description}
+                      </p>
+
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-12">
+                        {pkg.includes.map((include, i) => (
+                          <div key={i} className="flex items-center space-x-3">
+                            <CheckCircle2 className="text-orange-500 w-5 h-5 flex-shrink-0" />
+                            <span className="text-gray-600 font-medium">{include}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      <Link to="/contact">
+                        <button className="w-full bg-[#0167B2] text-white font-bold py-6 rounded-3xl hover:bg-orange-600 transition-all flex items-center justify-center gap-3 text-lg">
+                          Book This Package
+                          <ArrowRight className="w-5 h-5" />
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                </FadeInSection>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* 4. Bottom CTA Section */}
+      <section className="py-40 bg-white relative overflow-hidden">
+        <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
+          <FadeInSection>
+            <div className="mb-12 inline-block">
+              <div className="w-24 h-24 bg-orange-100 rounded-full flex items-center justify-center mx-auto mb-8">
+                <Star className="text-orange-500 w-12 h-12" />
+              </div>
+              <h2 className="text-5xl md:text-7xl font-bold text-blue-900 mb-8 leading-tight">
+                Ready for your <br />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-orange-600">
+                  {data.backgroundWord}
+                </span> Adventure?
+              </h2>
+              <p className="text-2xl text-gray-500 font-light max-w-2xl mx-auto mb-12">
+                Our travel consultants are ready to customize this journey exactly how you imagined it.
+              </p>
+              <Link to="/contact">
+                <button className="px-16 py-6 bg-[#F48A34] text-white font-black rounded-full hover:bg-blue-900 transition-all transform hover:scale-110 shadow-2xl text-xl uppercase tracking-widest">
+                  Let's Get Started
+                </button>
+              </Link>
+            </div>
+          </FadeInSection>
+        </div>
+      </section>
+    </div>
+  );
+}
