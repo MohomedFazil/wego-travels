@@ -109,7 +109,7 @@ export function WelcomeSplash({ onComplete, showSelection: showSelectionProp = f
                         <motion.div variants={itemVariants} className="relative inline-block mb-10">
                             <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/30 to-blue-500/30 rounded-full blur-3xl scale-150" />
                             <img
-                                src="/logo/76293549293501.png"
+                                src="/logo/logo.png"
                                 alt="Wego Travels"
                                 className="h-24 md:h-36 relative z-10 drop-shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                             />
@@ -274,7 +274,7 @@ export function WelcomeSplash({ onComplete, showSelection: showSelectionProp = f
                                     </defs>
                                 </svg>
 
-                                <img src="/logo/76293549293501.png" alt="Wego" className="h-full w-full object-contain filter brightness-125 z-10" />
+                                <img src="/logo/logo.png" alt="Wego" className="h-full w-full object-contain filter brightness-125 z-10" />
                             </motion.div>
                         </div>
                     </motion.div>

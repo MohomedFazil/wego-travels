@@ -14,7 +14,7 @@ export function Footer() {
                     <div className="space-y-4">
                         <Link to="/" className="inline-block">
                             <img
-                                src="/logo/76293549293501.png"
+                                src="/logo/logo.png"
                                 alt="Wego Travels Logo"
                                 className="h-30 w-auto object-contain hover:scale-105 transition-transform duration-300"
                             />

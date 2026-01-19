@@ -65,7 +65,7 @@ export function Navbar() {
             <div className="flex items-center group">
               <Link to="/" className="flex items-center gap-2">
                 <img
-                  src="/logo/76293549293501.png"
+                  src="/logo/logo.png"
                   alt="Wego Travels Logo"
                   className="h-16 md:h-20 w-auto object-contain group-hover:scale-105 transition-transform duration-300 drop-shadow-[0_0_28px_rgba(255,255,255,0.6)]"
                 />
